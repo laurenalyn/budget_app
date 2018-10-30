@@ -34,11 +34,21 @@ var UIController = ( function() {
 // GLOBAL APP CONTROLLER
 var controller = ( function(budgetCtrl, UICtrl){
     
-    var DOM = UIController.getDOMstrings();
+    var setupEventListeners = function() {
+        var DOM = UIController.getDOMstrings();
+
+        document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
+        // event parameters exist for all event listeners. we did not create it.
+        // event.which is to test for older browsers which do not have the keyCode property.
+        document.addEventListener('keypress', function(event) {
+        if (event.keyCode === 13 || event.which === 13) {
+            ctrlAddItem();
+        }
+    });
+    };
     
     var ctrlAddItem = function() {
         // 1. get the field input data
-
         var input = UIController.getinput();
         console.log(input);
 
@@ -50,19 +60,13 @@ var controller = ( function(budgetCtrl, UICtrl){
 
         // 5. display the budget on ui
 
-    }
+    };
 
-    document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
-    // event parameters exist for all event listeners. we did not create it.
-    // event.which is to test for older browsers which do not have the keyCode property.
-    document.addEventListener('keypress', function(event) {
-        if (event.keyCode === 13 || event.which === 13) {
-            ctrlAddItem();
-
+    return {
+        init: function() {
+            console.log('app has started');
+            setupEventListeners();
         }
-
-
-
-    });
+    };
 
 }(budgetController, UIController));
